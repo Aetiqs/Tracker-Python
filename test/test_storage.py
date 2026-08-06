@@ -1,6 +1,7 @@
 import json
 from models import Entree
 from storage import sauvegarder
+from storage import charger
 from datetime import date
 
 def test_sauvegarder(tmp_path):
@@ -36,3 +37,22 @@ def test_sauvegarder(tmp_path):
     assert data[0]["titre"] == "Dune"
     assert data[1]["note"] == 9.0
     assert data[2]["statut"] == "en cours"
+
+
+def test_charger (tmp_path):
+    film1 = Entree(titre="Dune",
+                       annee=2021,
+                       date_ajout=date(2026, 8, 6),
+                       statut="à voir",
+                       affiche_url="www.exemple.com/dune.jpg",
+                       note=4,
+                       commentaire="tesssst")
+    chemin = tmp_path / "backlog.json"
+    sauvegarder([film1], chemin)
+
+    resultat = charger(chemin)
+
+    assert len(resultat) == 1
+    assert resultat[0].titre == "Dune"
+    assert resultat[0].date_ajout == date(2026, 8, 6)
+    
