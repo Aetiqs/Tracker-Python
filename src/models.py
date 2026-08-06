@@ -10,6 +10,7 @@ class Entree:
     affiche_url: str
     note: float = None
     commentaire: str = None
+    synopsis: str = None
 
 
 

@@ -88,6 +88,14 @@ Format d'une entrée :
 **C'est quoi** : instruction qui vérifie qu'une condition est vraie. Si vraie, rien ne se passe. Si fausse, Python lève une `AssertionError` et arrête l'exécution à cet endroit, avec le détail de ce qui était attendu vs trouvé.
 **Pourquoi ça compte** : brique de base de tout test — on écrit une fois "je m'attends à ce que X soit vrai", et on peut relancer cette vérification à volonté après chaque modification du code, sans avoir à vérifier à l'œil à chaque fois.
 
+## Workflow pour ajouter une dépendance externe
+**Date** : 2026-08-06
+**C'est quoi** : à chaque fois qu'on ajoute un package externe (ex: `pytest`, `python-dotenv`) au projet, toujours la même séquence :
+1. `pip install nom_du_package` (installe dans le `.venv` activé)
+2. `pip freeze | grep nom_du_package` (récupère la version exacte installée)
+3. Ajouter la ligne `nom_du_package==version` dans `requirements.txt` (fige la version pour la reproductibilité)
+**Pourquoi ça compte** : `requirements.txt` doit toujours refléter fidèlement ce qui est réellement installé et utilisé par le projet — sinon quelqu'un (ou soi-même sur une autre machine) qui fait `pip install -r requirements.txt` ne retombe pas sur le même environnement, et peut avoir des bugs différents selon la version installée.
+
 ## Champs / schéma de données
 **Date** : 2026-08-06
 **C'est quoi** : les "champs" définis pour une entrée du backlog (titre, année, statut, note...) ne sont pas encore une vraie base de données en V1 (stockage JSON) — mais c'est le même schéma qui deviendra les colonnes de la table SQLite en V3.
